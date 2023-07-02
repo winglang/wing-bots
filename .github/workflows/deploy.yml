@@ -1,4 +1,9 @@
-on: [pull_request]
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write # required for requesting the JWT
@@ -6,9 +11,8 @@ permissions:
   pull-requests: write # required for posting comments to pull requests
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  TF_BACKEND_BUCKET: ${{ secrets.TF_BACKEND_BUCKET }}
-  TF_BACKEND_BUCKET_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: us-east-1
+  TF_BACKEND_BUCKET: tf-bucket
 
 jobs:
   build:
@@ -31,5 +35,5 @@ jobs:
           working-directory: "" # Optional, the working directory to use. e.g. ./examples/with-dependencies. Will set backend-scope to the relative path of the working directory.
           backend: "s3" # Optional, currently only 's3' is supported
         env:
-          TF_BACKEND_BUCKET: "<your-bucket-name>" # required, only required if s3 backend is
-          TF_BACKEND_BUCKET_REGION: "<your-bucket-region>" #  required, only required if s3 backend is
+          TF_BACKEND_BUCKET: ${{ env.TF_BACKEND_BUCKET }} # required, only required if s3 backend is
+          TF_BACKEND_BUCKET_REGION: ${{ env.AWS_REGION }} #  required, only required if s3 backend is
