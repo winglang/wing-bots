@@ -90,7 +90,7 @@ for item in Json.values(onCalls) {
 
 
 // schedule daily query
-let schedule = new cloud.Schedule(cron: "5 6,18 * * ?"); // how do I know what timezone is it?
+let schedule = new cloud.Schedule(cron: "5 3,15 * * ?"); // how do I know what timezone is it?
 
 schedule.onTick(handler);
 
