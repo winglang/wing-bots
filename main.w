@@ -23,8 +23,8 @@ class Slack {
 
     let res = http.post("https://slack.com/api/chat.postMessage", http.RequestOptions {
       headers: {
-        "Authorization": "Bearer ${token}",
-        "Content-Type": "application/json; charset=utf8",
+        "Authorization" => "Bearer ${token}",
+        "Content-Type" => "application/json; charset=utf8",
       },
       body: Json.stringify(Json {
         channel: args.channel,
@@ -46,19 +46,19 @@ let slack = new Slack(token: slackToken);
 
 let handler = inflight () => {
   let userToId = Map<str> {
-    "Tsuf Cohen": "U04CXQRM30T", 
-    "Uri Bar": "U048U51N37A", 
-    "Eyal Keren": "U0483031FQV", 
-    "Chris Rybicki": "U048VR13G0Y",
-    "Cristian Pallares": "U048H6N5KPT",
-    "Elad Ben-Israel": "U047QJ7HLRG",
-    "Hasan Abu-Rayyan": "U04C61FA2PP",
-    "Mark McCulloh": "U047YQCTUSJ",
-    "Pol Amoros": "U04D5ANRVGC",
-    "Revital Barletz": "U047XV37TQE",
-    "Shai Ainvoner": "U048U7H72HE",
-    "Shai Ber": "U047PN8SRSB",
-    "Yoav Steinberg": "U0486KT6R28"
+    "Tsuf Cohen" => "U04CXQRM30T", 
+    "Uri Bar" => "U048U51N37A", 
+    "Eyal Keren" => "U0483031FQV", 
+    "Chris Rybicki" => "U048VR13G0Y",
+    "Cristian Pallares" => "U048H6N5KPT",
+    "Elad Ben-Israel" => "U047QJ7HLRG",
+    "Hasan Abu-Rayyan" => "U04C61FA2PP",
+    "Mark McCulloh" => "U047YQCTUSJ",
+    "Pol Amoros" => "U04D5ANRVGC",
+    "Revital Barletz" => "U047XV37TQE",
+    "Shai Ainvoner" => "U048U7H72HE",
+    "Shai Ber" => "U047PN8SRSB",
+    "Yoav Steinberg" => "U0486KT6R28"
   };
 
 // query on-call
