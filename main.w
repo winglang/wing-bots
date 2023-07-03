@@ -76,10 +76,11 @@ let onCalls = body.get("oncalls");
 let var message = "_On-Call Update_ :dizzy:\n\n";
 for item in Json.values(onCalls) {
   let policyId = str.fromJson(item.get("escalation_policy").get("id"));
-  let schedule = str.fromJson(item.get("schedule")?.get("summary"));
-  let userName = str.fromJson(item.get("user")?.get("summary"));
-
+ 
   if (policyId == "POF5GFV") { // default policy id
+    let schedule = str.fromJson(item.get("schedule").get("summary"));
+    let userName = str.fromJson(item.get("user").get("summary"));
+
     message = message + "<@${userToId.get(userName)}> is our *${schedule}* on-call member! :rocket:\n";
   }
 }
