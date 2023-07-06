@@ -87,8 +87,8 @@ for item in Json.values(onCalls) {
 
   message = message + "\nPlease contact them for any urgent issues or escalations. Let's ensure a seamless operation! :raised_hands:";
 
-  // send to slack
-  slack.postMessage(text: message, channel: "G04G3TCHE12");
+  // send to slack - @mona-incident
+  slack.postMessage(text: message, channel: "C04CJL043D4");
 };
 
 
