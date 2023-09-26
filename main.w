@@ -18,7 +18,7 @@ class Slack {
     this.token = props.token;
   }
 
-  inflight postMessage(args: PostMessageArgs) {
+  pub inflight postMessage(args: PostMessageArgs) {
     let token = this.token.value();
 
     let res = http.post("https://slack.com/api/chat.postMessage", http.RequestOptions {
@@ -58,7 +58,8 @@ let handler = inflight () => {
     "Revital Barletz" => "U047XV37TQE",
     "Shai Ainvoner" => "U048U7H72HE",
     "Shai Ber" => "U047PN8SRSB",
-    "Yoav Steinberg" => "U0486KT6R28"
+    "Yoav Steinberg" => "U0486KT6R28",
+    "Elad Cohen" => "U04QJ9280NQ"
   };
 
 // query on-call
