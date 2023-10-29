@@ -87,7 +87,6 @@ for item in Json.values(onCalls) {
 }
 
   message = message + "\nPlease contact them for any urgent issues or escalations. Let's ensure a seamless operation! :raised_hands:";
-
   // send to slack - @mona-incident
   slack.postMessage(text: message, channel: "C04CJL043D4");
 };
@@ -95,8 +94,9 @@ for item in Json.values(onCalls) {
 
 
 // schedule daily query
-let schedule = new cloud.Schedule(cron: "5 3,15 * * ?"); // how do I know what timezone is it?
+let schedule = new cloud.Schedule(cron: "5 2,14 * * ?"); // at utc 2:05, 14:05
 
 schedule.onTick(handler);
+
 
 
