@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  NODE_VERSION: "18.16.0"
+  NODE_VERSION: 20
 
 permissions:
   id-token: write
@@ -64,4 +64,6 @@ jobs:
       - name: Test
         run: |
           cd ${{ matrix.projects.directory }}
+          if test -f **/*.test.w; then
           wing test -t ${{matrix.target}} **/*.test.w
+          fi
