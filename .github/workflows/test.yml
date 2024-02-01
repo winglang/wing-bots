@@ -1,18 +1,14 @@
-name: Deploy
+name: Test
 
 on:
-  push:
-    branches:
-      - main
-
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 env:
   AWS_REGION: us-east-1
-  TF_BACKEND_BUCKET_REGION: us-east-1
+  NODE_VERSION: "18.16.0"
 
 jobs:
   setup:
@@ -29,31 +25,37 @@ jobs:
     outputs:
       projects: ${{ steps.setdirs.outputs.dirs }}
 
-  deploy:
+  test:
     needs: setup
     runs-on: ubuntu-latest
     strategy:
       matrix:
         projects: ${{ fromJson(needs.setup.outputs.projects) }}
-    name: ${{ matrix.projects.name }}
-
+        target: ["sim", "tf-aws"]
+    name: ${{ matrix.projects.name }} - ${{ matrix.target }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
+        if: matrix.target == 'tf-aws'
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-      - name: Deploy Winglang App
-        uses: winglang/wing-github-action/actions/deploy@main
+
+      - name: Setup Node.js v18
+        uses: actions/setup-node@v4
         with:
-          entry: "main.w"
-          target: "tf-aws"
-          version: "latest"
-          working-directory: ${{matrix.projects.directory}}
-          backend: "s3"
-        env:
-          TF_BACKEND_BUCKET: ${{ env.TF_BACKEND_BUCKET }}
-          TF_BACKEND_BUCKET_REGION: ${{ matrix.projects.name }}
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Wing
+        run: |
+          npm install -g winglang
+          wing --version
+
+      - name: Test
+        run: |
+          cd ${{ matrix.projects.directory }}
+          wing test -t ${{matrix.target}} **/*.test.w

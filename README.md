@@ -1,6 +1,6 @@
-# OnCall notifier
+# Wing bots
 
-The OnCall notifier is one of the first production apps written in Wing.
-It includes a scheduled query to PagerDuty, on a twice-a-day basis, when the onCall member changes, parsing and posting the response on a slack channel.
+Here is a collection of standalone wing bots that are used in production.
 
-It's deployed to AWS via a github workflow, on each merge to main.
+1. [incident](./incident/README.md);
+2. [usage-notification](./usage-notification/README.md)
