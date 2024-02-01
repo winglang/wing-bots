@@ -14,7 +14,7 @@ struct PostMessageArgs {
 class Slack {
   token: cloud.Secret;
 
-  init(props: SlackProps) {
+  new(props: SlackProps) {
     this.token = props.token;
   }
 
@@ -23,7 +23,7 @@ class Slack {
 
     let res = http.post("https://slack.com/api/chat.postMessage", http.RequestOptions {
       headers: {
-        "Authorization" => "Bearer ${token}",
+        "Authorization" => "Bearer {token}",
         "Content-Type" => "application/json; charset=utf8",
       },
       body: Json.stringify(Json {
@@ -40,6 +40,7 @@ class Slack {
 
 // pre flights
 let slackToken = new cloud.Secret(name: "slack-token") as "slack";
+let channelToken = new cloud.Secret(name: "incident/slack-channel") as "slack-channel";
 let pagerDutyToken = new cloud.Secret(name: "pager-duty") as "pd";
 let slack = new Slack(token: slackToken);
 
@@ -65,13 +66,13 @@ let handler = inflight () => {
 // query on-call
 let onCallResponse = http.get("https://api.pagerduty.com/oncalls", Json {
   headers: {
-    "Authorization": "Token token=${pagerDutyToken.value()}",
+    "Authorization": "Token token={pagerDutyToken.value()}",
     "Content-Type": "application/json",
     "Accept": "*/*"
   }
 });
 
-let body =  Json.parse(onCallResponse.body ?? "{}");
+let body =  Json.parse(onCallResponse.body);
 
 let onCalls = body.get("oncalls");
 let var message = "_On-Call Update_ :dizzy:\n\n";
@@ -82,13 +83,13 @@ for item in Json.values(onCalls) {
     let schedule = str.fromJson(item.get("schedule").get("summary"));
     let userName = str.fromJson(item.get("user").get("summary"));
 
-    message = message + "<@${userToId.get(userName)}> is our *${schedule}* on-call member! :rocket:\n";
+    message = message + "<@{userToId.get(userName)}> is our *{schedule}* on-call member! :rocket:\n";
   }
 }
 
   message = message + "\nPlease contact them for any urgent issues or escalations. Let's ensure a seamless operation! :raised_hands:";
   // send to slack - @mona-incident
-  slack.postMessage(text: message, channel: "C04CJL043D4");
+  slack.postMessage(text: message, channel: channelToken.value() );
 };
 
 
@@ -97,6 +98,10 @@ for item in Json.values(onCalls) {
 let schedule = new cloud.Schedule(cron: "5 4,16 * * ?"); // at utc 4:05, 16:05
 
 schedule.onTick(handler);
+
+test "testing handler" {
+  handler();
+}
 
 
 
