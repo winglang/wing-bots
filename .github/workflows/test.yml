@@ -13,12 +13,13 @@ env:
 permissions:
   id-token: write
   contents: read
-  pull-requests: write
 
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
       - name: Get list of directories and save them to the output
         id: setdirs
         shell: bash
