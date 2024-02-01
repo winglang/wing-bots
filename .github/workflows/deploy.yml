@@ -54,7 +54,7 @@ jobs:
           entry: "main.w"
           target: "tf-aws"
           version: "latest"
-          working-directory: ${{matrix.projects.directory}}
+          working-directory: ./${{matrix.projects.name}}
           backend: "s3"
         env:
           TF_BACKEND_BUCKET: ${{ env.TF_BACKEND_BUCKET }}
