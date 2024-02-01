@@ -10,6 +10,9 @@ env:
   AWS_REGION: us-east-1
   NODE_VERSION: "18.16.0"
 
+permissions:
+  contents: read
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -18,7 +21,7 @@ jobs:
         id: setdirs
         shell: bash
         run: |
-          dirs=$(ls -d | sed 's/\/$//' | grep -v "README.md\|.gitignore" | jq -R -s -c 'split("\n")[:-1]')
+          dirs=$(ls -d * | sed 's/\/$//' | grep -v "README.md\|.gitignore" | jq -R -s -c 'split("\n")[:-1]')
           processed_dirs=$(echo "{ \"directory\": $dirs }" | jq -c '[ .directory[] | {directory: ., name: (split("/") | last)}]')
           wrapped_dirs=$(echo $processed_dirs | jq -c .)
           echo "dirs=$wrapped_dirs" >> $GITHUB_OUTPUT
