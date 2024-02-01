@@ -58,5 +58,5 @@ jobs:
           working-directory: ./${{matrix.projects.name}}
           backend: "s3"
         env:
-          TF_BACKEND_BUCKET: ${{ matrix.projects.name }}
+          TF_BACKEND_BUCKET: wingbots-${{ matrix.projects.name }}
           TF_BACKEND_BUCKET_REGION: ${{ env.TF_BACKEND_BUCKET_REGION }}
