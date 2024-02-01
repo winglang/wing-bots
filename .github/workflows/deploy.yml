@@ -12,7 +12,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  TF_BACKEND_BUCKET_REGION: 'ap-northeast-2
+  TF_BACKEND_BUCKET_REGION: "ap-northeast-2"
 
 jobs:
   setup:
@@ -24,7 +24,7 @@ jobs:
         id: setdirs
         shell: bash
         run: |
-          dirs=$(ls -d $PWD/* | sed 's/\/$//' | grep -v "README.md\|.gitignore" | jq -R -s -c 'split("\n")[:-1]')
+          dirs=$(ls -d $PWD/* | sed 's/\/$//' | grep -v "README.md\|.gitignore\|usage-notification" | jq -R -s -c 'split("\n")[:-1]')
           processed_dirs=$(echo "{ \"directory\": $dirs }" | jq -c '[ .directory[] | {directory: ., name: (split("/") | last)}]')
           wrapped_dirs=$(echo $processed_dirs | jq -c .)
           echo "dirs=$wrapped_dirs" >> $GITHUB_OUTPUT
@@ -42,6 +42,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
