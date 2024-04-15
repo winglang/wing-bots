@@ -95,7 +95,7 @@ for item in Json.values(onCalls) {
 
 
 // schedule daily query
-let schedule = new cloud.Schedule(cron: "5 4,16 * * ?"); // at utc 4:05, 16:05
+let schedule = new cloud.Schedule(cron: "5 3,15 * * *"); // at utc 3:05, 15:05
 
 schedule.onTick(handler);
 
